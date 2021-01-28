@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sender home Page{% endblock %}
+{% block header %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key="></script>
+  <script src="{% static "location-picker/dist/location-picker.min.js" %}"></script>
+  <style type="text/css">
+    #map {
+      width: 100%;
+      height: 480px;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div>
+    <button>Use current location</button>
+    <div id="map">
+
+    </div>
+    <button id="confirmPosition">Confirm Position</button>
+<br>
+<p>On idle position: <span id="onIdlePositionView"></span></p>
+<p>On click position: <span id="onClickPositionView"></span></p>
+
+    <div>
+        <h3>http://menged.heokuapp.com/1.024545/2.1545854545/bus</h3>
+        <input id="text" type="text" value="http://menged.heokuapp.com/1.024545/2.1545854545/bus" style="width:80%" /><br />
+        <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+    </div>
+    <button>Share my location</button>
+    <button>Download pdf</button>
+</div>
+
+<script>
+  // Get element references
+  var confirmBtn = document.getElementById('confirmPosition');
+  var onClickPositionView = document.getElementById('onClickPositionView');
+  var onIdlePositionView = document.getElementById('onIdlePositionView');
+  var elTextTwo = document.getElementById("text");
+
+  // Initialize locationPicker plugin
+  var lp = new locationPicker('map', {
+    setCurrentPosition: true, // You can omit this, defaults to true
+  }, {
+    zoom: 15 // You can set any google map options here, zoom defaults to 15
+  });
+
+  // Listen to button onclick event
+  confirmBtn.onclick = function () {
+    // Get current location and show it in HTML
+    var location = lp.getMarkerPosition();
+    onClickPositionView.innerHTML = 'The chosen location is ' + location.lat + ',' + location.lng;
+    elTextTwo.innerHTML = 'The chosen location is ' + location.lat + ',' + location.lng;
+  };
+
+  // Listen to map idle event, listening to idle event more accurate than listening to ondrag event
+  google.maps.event.addListener(lp.map, 'idle', function (event) {
+    // Get current location and show it in HTML
+    var location = lp.getMarkerPosition();
+    onIdlePositionView.innerHTML = 'The chosen location is ' + location.lat + ',' + location.lng;
+  });
+</script>
+
+
+
+<script type="text/javascript">
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        width : 100,
+        height : 100
+    });
+    
+    function makeCode () {		
+        var elText = document.getElementById("text");
+        
+        if (!elText.value) {
+            alert("Input a text");
+            elText.focus();
+            return;
+        }
+        
+        qrcode.makeCode(elText.value);
+    }
+    
+    makeCode();
+    
+    $("#text").
+        on("blur", function () {
+            makeCode();
+        }).
+        on("keydown", function (e) {
+            if (e.keyCode == 13) {
+                makeCode();
+            }
+        });
+    </script>
+{% endblock %}

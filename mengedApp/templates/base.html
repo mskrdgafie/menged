@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+        <link rel="stylesheet" href="{% static "bootstrap-5.0.0/css/bootstrap.min.css" %}"/>
+        <script type="text/javascript" src="{% static "bootstrap-5.0.0/js/bootstrap.min.js" %}"/>
+        <script type="text/javascript" src="{% static "jquery.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "qrcode.js" %}"></script>
+        {% block header %}
+
+        {% endblock %}
+    </head>
+    <body>
+    <div class="container">
+        <nav class="navbar navbar-expand-sm bg-light justify-content-center">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/receiver">Reciver</a></li>
+                <li class="nav-item"><a class="nav-link" href="/sender">Sender</a></li>
+            </ul>
+        </nav>
+        {% block content %}
+        
+        {% endblock %}
+    </div>
+    </body>
+</html>

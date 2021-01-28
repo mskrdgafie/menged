@@ -1,0 +1,11 @@
+{
+  "name": "menged",
+  "version": "1.0.0",
+  "description": "Menged is path telling app that show taxi and bus path to path finders.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Misiker Degafe",
+  "license": "ISC"
+}

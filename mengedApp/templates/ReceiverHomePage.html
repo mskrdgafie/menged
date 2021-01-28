@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Recive Home Page{% endblock %}
+{% block content %}
+    <div class="card">
+  <div class="card-header">Menged</div>
+  <div class="card-body">
+      <div id="qr-reader" style="width:500px"></div>
+    <div id="qr-reader-results"></div>
+    <map></map>
+  </div>
+  <div class="card-footer">
+      <form action="" class="form-inline">
+          <input type="text" class="form-control" id="destination" placeholder="destination">
+          <input type="submit" value="search" class="btn btn-primary"/>
+      </form>
+  </div>
+</div>
+<div>
+
+
+</div>
+
+
+<script src="{% static "html5-qrcode.min.js" %}"></script>
+<script>
+    function docReady(fn) {
+        // see if DOM is already available
+        if (document.readyState === "complete"
+            || document.readyState === "interactive") {
+            // call on next available tick
+            setTimeout(fn, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }
+
+    docReady(function () {
+        var resultContainer = document.getElementById('qr-reader-results');
+        var lastResult, countResults = 0;
+        function onScanSuccess(qrCodeMessage) {
+            if (qrCodeMessage !== lastResult) {
+                ++countResults;
+                lastResult = qrCodeMessage;
+                resultContainer.innerHTML
+                    += `<div>[${countResults}] - ${qrCodeMessage}</div>`;
+            }
+        }
+
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    });
+</script>
+
+{% endblock %}
